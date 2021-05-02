@@ -23,10 +23,15 @@ const postUsers = (req, res = response) => {
     });
 };
 
+
 const putUsers = (req, res = response) => {
 
+    const { name, age } = req.body;
+
     res.json({
-        msg: 'PUT api - controller',
+        msg: 'POST api - controller',
+        name,
+        age
     });
 };
 
@@ -36,7 +41,7 @@ const patchUsers = (req, res = response) => {
     });
 };
 
-const DeleteUsers = (req, res = response) => {
+const deleteUsers = (req, res = response) => {
     res.json({
         msg: 'DELETE api - controller',
     });
@@ -47,5 +52,5 @@ module.exports = {
     postUsers,
     putUsers,
     patchUsers,
-    DeleteUsers
+    deleteUsers
 }
