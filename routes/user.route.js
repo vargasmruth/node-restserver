@@ -1,7 +1,7 @@
 
 const { Router } = require('express');
 const { check } = require('express-validator');
-const { isValidRole, emailExist } = require('../helpers/db-validator');
+const { isValidRole, emailExist, existUserById } = require('../helpers/db-validator');
 const { getUsers,
     postUsers,
     putUsers,
@@ -25,7 +25,12 @@ router.post('/', [
     validator
 ], postUsers );
 
-router.put('/', putUsers );
+router.put('/:id',[
+    check('id', 'No es un id válido').isMongoId(),
+    check('id').custom(existUserById),
+    check('role', 'No es un rol permitido').custom(isValidRole),
+    validator
+], putUsers );
 
 router.patch('/', patchUsers );
 

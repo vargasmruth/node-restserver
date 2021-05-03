@@ -33,15 +33,22 @@ const postUsers = async (req, res = response) => {
     });
 };
 
+const putUsers = async(req, res = response) => {
 
-const putUsers = (req, res = response) => {
+    const { id } = req.params;
+    const { _id, password, google, email, ...resto } = req.body;
 
-    const { name, age } = req.body;
+    if (password) {
+        /* Encrypt pass */
+        const salt = bcrypt.genSaltSync();
+        resto.password = bcrypt.hashSync( password, salt );        
+    }
+
+    const user = await User.findByIdAndUpdate(id, resto);
 
     res.json({
-        msg: 'POST api - controller',
-        name,
-        age
+        msg: 'PUT api - controller',
+        user
     });
 };
 
