@@ -1,7 +1,7 @@
 
 const { Router } = require('express');
 const { check } = require('express-validator');
-const { isValidRole } = require('../helpers/db-validator');
+const { isValidRole, emailExist } = require('../helpers/db-validator');
 const { getUsers,
     postUsers,
     putUsers,
@@ -19,6 +19,7 @@ router.post('/', [
     check('password', 'La contraseña es requerido, debe ser de mas de 8 caracteres')
     .not().isEmpty().isLength({min: 8}),
     check('email', 'El email no es válido').isEmail(),
+    check('email').custom(emailExist),
     /* check('role', 'No es un rol permitido').isIn(['ADMIN_ROLE', 'USER_ROLE']), */
     check('role', 'No es un rol permitido').custom(isValidRole),
     validator
