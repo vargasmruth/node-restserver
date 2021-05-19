@@ -8,8 +8,12 @@ const { getUsers,
     patchUsers,
     deleteUsers } = require('../controllers/user.controller');
 
-const { validator } = require('../middelwares/validator');
-const { validateJwt } = require('../middelwares/validate-jwt');
+const{
+    validator,
+    validateJwt,
+    isAdminRole,
+    hasRole
+} = require('../middelwares')
 
 const router = Router();
 
@@ -37,6 +41,8 @@ router.patch('/', patchUsers );
 
 router.delete('/:id', [
     validateJwt,
+    isAdminRole,
+    hasRole('ADMIN_ROLE', 'SALE_ROLE'),
     check('id', 'No es un id válido').isMongoId(),
     check('id').custom(existUserById),
     validator
