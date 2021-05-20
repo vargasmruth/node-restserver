@@ -54,12 +54,32 @@ const googleSignIn = async(req, res = response) => {
     const {id_token} = req.body;
     
     try {
-        const googleUser = await googleVerify( id_token );
-        console.log(googleUser);
+        // const googleUser = await googleVerify( id_token );
+        const {name, img, email} = await googleVerify( id_token );
 
+        let user = await User.findOne({email});
+        if (!user) {
+            const data = {
+                name,
+                email,
+                password: '***',
+                img,
+                google: true
+            }
+            user = new User(data);
+            await user.save();
+        }
+
+        if (!user.status) {
+            return res.status(401).json({
+                msg: 'Usuario no habilitado, contactese con el administrador del sistema.'
+            })
+        }
+
+        const token = await jwtGenerate(user.id);
+        
         res.json({
-            msg: 'Todo ok! google signIn',
-            googleUser
+            user, token
         })
     } catch (error) {
         res.status(400).json({
