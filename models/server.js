@@ -12,7 +12,8 @@ class Server {
         this.paths = {
             users:      '/api/users',
             auth:       '/api/auth',
-            categories: '/api/categories'
+            categories: '/api/categories',
+            products: '/api/products'
         }        
 
         /* Connect to db */
@@ -29,6 +30,7 @@ class Server {
         this.app.use(this.paths.auth, require('../routes/auth.route'));
         this.app.use(this.paths.users, require('../routes/user.route'));
         this.app.use(this.paths.categories, require('../routes/categories.route'));
+        this.app.use(this.paths.products, require('../routes/products.route'));
     }
 
     async dbConnect() {
