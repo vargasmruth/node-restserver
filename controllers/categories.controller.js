@@ -1,6 +1,6 @@
 const { request, response} = require('express');
 
-const Category = require('../models/category');
+const { Category } = require('../models');
 
 const getCategories = async(req, res = response) => {
     
@@ -31,10 +31,8 @@ const createCategory = async(req, res = response) => {
     
     const name = req.body.name.toUpperCase();
     const categoryDB = await Category.findOne({name});
-    
-    console.log(categoryDB)
-    
-    if (categoryDB) {
+        
+    if ( categoryDB ) {
         return res.status(400).json({
             msg: `La categoria ${categoryDB.name}, ya existe`
         });
@@ -45,11 +43,11 @@ const createCategory = async(req, res = response) => {
         user: req.user._id
     }
 
-    const category = new Category(data);
+    const category = new Category( data );
 
     await category.save();
 
-    res.status(201).json(category);
+    res.status(201).json( category );
 }
 
 const updateCategory = async(req, res = response) => {
@@ -60,17 +58,17 @@ const updateCategory = async(req, res = response) => {
     data.name = data.name.toUpperCase();
     data.user = req.user._id;
 
-    const category = await Category.findByIdAndUpdate(id, data, {new: true});
+    const category = await Category.findByIdAndUpdate(id, data, { new: true });
 
-    res.json(category);
+    res.json( category );
 }
 
 const deleteCategory = async(req, res = response) => {
     
     const { id } = req.params;
-    const deletedCategory = await Category.findByIdAndUpdate(id, {status: false}, {new: true});
+    const deletedCategory = await Category.findByIdAndUpdate(id, { status: false }, { new: true });
     
-    res.json(deletedCategory);
+    res.json( deletedCategory );
 }
 
 module.exports = {

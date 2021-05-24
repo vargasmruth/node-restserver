@@ -1,6 +1,7 @@
 
 const express = require('express');
 const cors = require('cors');
+
 const { dbConnection } = require('../database/config');
 
 class Server {
@@ -27,14 +28,6 @@ class Server {
         this.routes();
     }
 
-    routes(){
-        this.app.use(this.paths.auth, require('../routes/auth.route'));
-        this.app.use(this.paths.users, require('../routes/user.route'));
-        this.app.use(this.paths.categories, require('../routes/categories.route'));
-        this.app.use(this.paths.products, require('../routes/products.route'));
-        this.app.use(this.paths.search, require('../routes/search.route'));
-    }
-
     async dbConnect() {
         await dbConnection();
     }
@@ -48,6 +41,14 @@ class Server {
         
         /* public directory */
         this.app.use(express.static('public'));
+    }
+
+    routes(){
+        this.app.use(this.paths.auth, require('../routes/auth.route'));
+        this.app.use(this.paths.users, require('../routes/user.route'));
+        this.app.use(this.paths.categories, require('../routes/categories.route'));
+        this.app.use(this.paths.products, require('../routes/products.route'));
+        this.app.use(this.paths.search, require('../routes/search.route'));
     }
 
     listen() {
