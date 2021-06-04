@@ -24,7 +24,7 @@ const uploadFile = (files, validExtensions = ['png', 'jpg', 'gif'], directory = 
         }
     
         resolve(nameTemp);
-
+        
         });
     })
     
